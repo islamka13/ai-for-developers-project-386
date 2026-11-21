@@ -6,12 +6,14 @@ import type { EventType } from './generated/schemas/eventType.ts'
  */
 export interface EventTypeRepository {
   list(): EventType[]
+  findById(id: number): EventType | undefined
 }
 
 export function createEventTypeRepository(seed: EventType[]): EventTypeRepository {
   const eventTypes = [...seed]
   return {
     list: () => [...eventTypes],
+    findById: (id) => eventTypes.find((eventType) => eventType.id === id),
   }
 }
 

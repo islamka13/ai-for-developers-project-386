@@ -21,6 +21,19 @@ export const EventTypesListEventTypesResponse = zod.object({
 }).describe('Каталог типов встреч.')
 
 
+export const EventTypesListSlotsParams = zod.object({
+  "id": zod.string()
+})
+
+export const EventTypesListSlotsQueryParams = zod.object({
+  "date": zod.iso.date().describe('Дата в формате YYYY-MM-DD (зона владельца).')
+})
+
+export const EventTypesListSlotsResponse = zod.object({
+  "slots": zod.array(zod.string())
+}).describe('Свободные старты слотов на дату (ISO 8601 с offset зоны владельца).')
+
+
 export const HealthCheckResponse = zod.object({
   "status": zod.string()
 })

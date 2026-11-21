@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import '@/api'
 import { eventTypesListEventTypes } from '@/client/sdk.gen'
 import type { EventType } from '@/client/types.gen'
+import { SlotCalendar } from './slot-calendar'
 
 type CatalogState =
   | { status: 'loading' }
@@ -10,6 +11,7 @@ type CatalogState =
 
 export function BookingPage() {
   const [state, setState] = useState<CatalogState>({ status: 'loading' })
+  const [selected, setSelected] = useState<EventType | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -43,14 +45,24 @@ export function BookingPage() {
       {state.status === 'ready' && state.eventTypes.length > 0 && (
         <ul className="grid gap-4 sm:grid-cols-2">
           {state.eventTypes.map((eventType) => (
-            <li key={eventType.id} className="rounded-lg border p-4">
-              <h2 className="text-lg font-semibold">{eventType.title}</h2>
-              <p className="text-muted-foreground text-sm">{eventType.description}</p>
-              <p className="mt-2 text-sm font-medium">{eventType.durationMinutes} мин</p>
+            <li key={eventType.id}>
+              <button
+                type="button"
+                aria-pressed={selected?.id === eventType.id}
+                onClick={() => setSelected(eventType)}
+                className={`w-full rounded-lg border p-4 text-left ${
+                  selected?.id === eventType.id ? 'border-primary ring-2 ring-primary' : ''
+                }`}
+              >
+                <h2 className="text-lg font-semibold">{eventType.title}</h2>
+                <p className="text-muted-foreground text-sm">{eventType.description}</p>
+                <p className="mt-2 text-sm font-medium">{eventType.durationMinutes} мин</p>
+              </button>
             </li>
           ))}
         </ul>
       )}
+      {selected && <SlotCalendar eventType={selected} />}
     </main>
   )
 }

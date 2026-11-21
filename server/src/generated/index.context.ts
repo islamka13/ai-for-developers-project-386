@@ -6,5 +6,14 @@
  */
 import type { Context, Env } from 'hono';
 
+import type {
+EventTypesListSlotsParams
+} from './schemas';
+
 export type EventTypesListEventTypesContext<E extends Env = any> = Context<E, '/api/event-types'>
+export type EventTypesListSlotsContext<E extends Env = any> = Context<E, '/api/event-types/:id/slots', { in: { param: {
+ id: string,
+ },query: EventTypesListSlotsParams, }, out: { param: {
+ id: string,
+ },query: EventTypesListSlotsParams, } }>
 export type HealthCheckContext<E extends Env = any> = Context<E, '/api/health'>

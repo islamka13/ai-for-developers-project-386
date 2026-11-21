@@ -5,6 +5,10 @@
  * OpenAPI spec version: 0.0.0
  */
 
+export * from './apiError.ts';
+export * from './apiErrorError.ts';
 export * from './eventType.ts';
 export * from './eventTypeList.ts';
+export * from './eventTypesListSlotsParams.ts';
 export * from './healthCheck200.ts';
+export * from './slotList.ts';

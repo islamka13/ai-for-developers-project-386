@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { EventTypesListEventTypesData, EventTypesListEventTypesResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
+import type { EventTypesListEventTypesData, EventTypesListEventTypesResponses, EventTypesListSlotsData, EventTypesListSlotsErrors, EventTypesListSlotsResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -22,6 +22,11 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  * Список типов встреч.
  */
 export const eventTypesListEventTypes = <ThrowOnError extends boolean = false>(options?: Options<EventTypesListEventTypesData, ThrowOnError>): RequestResult<EventTypesListEventTypesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<EventTypesListEventTypesResponses, unknown, ThrowOnError>({ url: '/api/event-types', ...options });
+
+/**
+ * Свободные слоты типа встречи на дату (дата в зоне владельца).
+ */
+export const eventTypesListSlots = <ThrowOnError extends boolean = false>(options: Options<EventTypesListSlotsData, ThrowOnError>): RequestResult<EventTypesListSlotsResponses, EventTypesListSlotsErrors, ThrowOnError> => (options.client ?? client).get<EventTypesListSlotsResponses, EventTypesListSlotsErrors, ThrowOnError>({ url: '/api/event-types/{id}/slots', ...options });
 
 /**
  * Проверка живости сервиса.

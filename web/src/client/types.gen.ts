@@ -5,6 +5,17 @@ export type ClientOptions = {
 };
 
 /**
+ * Ошибка API в единой форме.
+ */
+export type ApiError = {
+    error: {
+        code: string;
+        message: string;
+        details?: unknown;
+    };
+};
+
+/**
  * Тип встречи: название, описание и длительность в минутах.
  */
 export type EventType = {
@@ -19,6 +30,13 @@ export type EventType = {
  */
 export type EventTypeList = {
     eventTypes: Array<EventType>;
+};
+
+/**
+ * Свободные старты слотов на дату (ISO 8601 с offset зоны владельца).
+ */
+export type SlotList = {
+    slots: Array<string>;
 };
 
 export type EventTypesListEventTypesData = {
@@ -36,6 +54,38 @@ export type EventTypesListEventTypesResponses = {
 };
 
 export type EventTypesListEventTypesResponse = EventTypesListEventTypesResponses[keyof EventTypesListEventTypesResponses];
+
+export type EventTypesListSlotsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query: {
+        /**
+         * Дата в формате YYYY-MM-DD (зона владельца).
+         */
+        date: string;
+    };
+    url: '/api/event-types/{id}/slots';
+};
+
+export type EventTypesListSlotsErrors = {
+    /**
+     * The server cannot find the requested resource.
+     */
+    404: ApiError;
+};
+
+export type EventTypesListSlotsError = EventTypesListSlotsErrors[keyof EventTypesListSlotsErrors];
+
+export type EventTypesListSlotsResponses = {
+    /**
+     * The request has succeeded.
+     */
+    200: SlotList;
+};
+
+export type EventTypesListSlotsResponse = EventTypesListSlotsResponses[keyof EventTypesListSlotsResponses];
 
 export type HealthCheckData = {
     body?: never;

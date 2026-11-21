@@ -16,6 +16,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/EventTypeList'
+  /api/event-types/{id}/slots:
+    get:
+      operationId: EventTypes_listSlots
+      description: Свободные слоты типа встречи на дату (дата в зоне владельца).
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          required: true
+          description: Дата в формате YYYY-MM-DD (зона владельца).
+          schema:
+            type: string
+            format: date
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlotList'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
   /api/health:
     get:
       operationId: Health_check
@@ -35,6 +66,23 @@ paths:
                   - status
 components:
   schemas:
+    ApiError:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details: {}
+          required:
+            - code
+            - message
+      description: Ошибка API в единой форме.
     EventType:
       type: object
       required:
@@ -67,6 +115,16 @@ components:
           items:
             $ref: '#/components/schemas/EventType'
       description: Каталог типов встреч.
+    SlotList:
+      type: object
+      required:
+        - slots
+      properties:
+        slots:
+          type: array
+          items:
+            type: string
+      description: Свободные старты слотов на дату (ISO 8601 с offset зоны владельца).
 servers:
   - url: http://localhost:3000
     description: dev server

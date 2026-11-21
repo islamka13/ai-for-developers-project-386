@@ -1,13 +1,9 @@
 import path from 'node:path'
 import SwaggerParser from '@apidevtools/swagger-parser'
-import AjvModule from 'ajv'
-import addFormatsModule from 'ajv-formats'
+import Ajv from 'ajv'
+import addFormats from 'ajv-formats'
 import { beforeAll, describe, expect, it } from 'vitest'
 import { app } from '../src/app.ts'
-
-// CJS-пакеты под verbatimModuleSyntax: default-экспорт лежит в `.default`.
-const Ajv = AjvModule.default
-const addFormats = addFormatsModule.default
 
 const SPEC_PATH = path.resolve(__dirname, '../../contract/openapi.yaml')
 
