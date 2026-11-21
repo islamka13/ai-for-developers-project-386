@@ -7,6 +7,28 @@
 import * as zod from 'zod';
 
 
+
+
+export const BookingsCreateBookingBody = zod.object({
+  "eventTypeId": zod.string(),
+  "start": zod.iso.datetime({"offset":true}).describe('Старт слота: ISO 8601 с offset зоны владельца.'),
+  "guestName": zod.string().min(1)
+}).describe('Данные для создания бронирования гостем.')
+
+
+
+
+export const BookingsCreateBookingResponse = zod.object({
+  "booking": zod.object({
+  "id": zod.string().describe('Идентификатор генерирует сервер.'),
+  "eventTypeId": zod.string(),
+  "start": zod.iso.datetime({"offset":true}).describe('Старт слота: ISO 8601 с offset зоны владельца.'),
+  "guestName": zod.string().min(1)
+}).describe('Бронирование: слот, занятый гостем.')
+}).describe('Созданное бронирование.')
+
+
+
 export const eventTypesListEventTypesResponseEventTypesItemDurationMinutesMax = 540;
 
 

@@ -41,7 +41,19 @@ type SlotsState =
   | { status: 'error' }
   | { status: 'ready'; slots: string[] }
 
-export function SlotCalendar({ eventType }: { eventType: EventType }) {
+interface SlotCalendarProps {
+  eventType: EventType
+  selectedSlot?: string | null
+  onSlotSelect?: (slot: string) => void
+  onDateChange?: () => void
+}
+
+export function SlotCalendar({
+  eventType,
+  selectedSlot,
+  onSlotSelect,
+  onDateChange,
+}: SlotCalendarProps) {
   const dates = useMemo(() => bookingWindowDates(), [])
   const [selectedDate, setSelectedDate] = useState(dates[0])
   const [state, setState] = useState<SlotsState>({ status: 'loading' })
@@ -78,7 +90,10 @@ export function SlotCalendar({ eventType }: { eventType: EventType }) {
             key={date}
             type="button"
             aria-pressed={date === selectedDate}
-            onClick={() => setSelectedDate(date)}
+            onClick={() => {
+              setSelectedDate(date)
+              onDateChange?.()
+            }}
             className={`rounded-md border px-3 py-2 text-sm ${
               date === selectedDate ? 'bg-primary text-primary-foreground' : 'bg-background'
             }`}
@@ -98,7 +113,14 @@ export function SlotCalendar({ eventType }: { eventType: EventType }) {
         <ul className="flex flex-wrap gap-2" aria-label="Свободные слоты">
           {state.slots.map((slot) => (
             <li key={slot}>
-              <button type="button" className="rounded-md border px-3 py-2 text-sm">
+              <button
+                type="button"
+                aria-pressed={slot === selectedSlot}
+                onClick={() => onSlotSelect?.(slot)}
+                className={`rounded-md border px-3 py-2 text-sm ${
+                  slot === selectedSlot ? 'bg-primary text-primary-foreground' : 'bg-background'
+                }`}
+              >
                 {formatSlotLabel(slot)}
               </button>
             </li>

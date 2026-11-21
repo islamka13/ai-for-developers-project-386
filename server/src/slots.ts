@@ -38,6 +38,33 @@ function toIsoWithOffset(date: string, minutes: number): string {
   return `${date}T${hh}:${mm}:00${OWNER_UTC_OFFSET}`
 }
 
+/**
+ * Проверка старта бронирования. Возвращает сообщение об ошибке или null,
+ * если старт можно занимать. Использует те же правила, что генератор слотов.
+ */
+export function validateSlotStart(startIso: string, durationMinutes: number, now: Date): string | null {
+  if (!startIso.endsWith(OWNER_UTC_OFFSET)) {
+    return 'Укажите время в часовом поясе владельца календаря (UTC+5).'
+  }
+  const date = startIso.slice(0, 10)
+  const clockTime = startIso.slice(11, 19)
+  const [hours = 0, minutes = 0, seconds = 0] = clockTime.split(':').map(Number)
+  if (seconds !== 0 || minutes % GRID_MINUTES !== 0) {
+    return 'Старт должен быть по сетке 30 минут.'
+  }
+  const startMinutes = hours * 60 + minutes
+  if (startMinutes < WORK_START_MINUTES || startMinutes + durationMinutes > WORK_END_MINUTES) {
+    return 'Слот должен целиком помещаться в рабочие часы (09:00–18:00).'
+  }
+  if (!isInsideBookingWindow(date, now)) {
+    return 'Старт вне окна записи.'
+  }
+  if (new Date(startIso).getTime() <= now.getTime()) {
+    return 'Нельзя записаться на время, которое уже началось.'
+  }
+  return null
+}
+
 export interface SlotQuery {
   /** Дата в зоне владельца (YYYY-MM-DD). */
   date: string

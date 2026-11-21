@@ -4,6 +4,42 @@ info:
   version: 0.0.0
 tags: []
 paths:
+  /api/bookings:
+    post:
+      operationId: Bookings_createBooking
+      description: Занять свободный слот (гость).
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatedBooking'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: The request conflicts with the current state of the server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBooking'
   /api/event-types:
     get:
       operationId: EventTypes_listEventTypes
@@ -109,6 +145,44 @@ components:
             - code
             - message
       description: 'Единая форма ошибки: код, сообщение и необязательные детали по полям.'
+    Booking:
+      type: object
+      required:
+        - id
+        - eventTypeId
+        - start
+        - guestName
+      properties:
+        id:
+          type: string
+          description: Идентификатор генерирует сервер.
+        eventTypeId:
+          type: string
+        start:
+          type: string
+          format: date-time
+          description: 'Старт слота: ISO 8601 с offset зоны владельца.'
+        guestName:
+          type: string
+          minLength: 1
+      description: 'Бронирование: слот, занятый гостем.'
+    CreateBooking:
+      type: object
+      required:
+        - eventTypeId
+        - start
+        - guestName
+      properties:
+        eventTypeId:
+          type: string
+        start:
+          type: string
+          format: date-time
+          description: 'Старт слота: ISO 8601 с offset зоны владельца.'
+        guestName:
+          type: string
+          minLength: 1
+      description: Данные для создания бронирования гостем.
     CreateEventType:
       type: object
       required:
@@ -128,6 +202,14 @@ components:
           minimum: 1
           maximum: 540
       description: Данные для создания типа встречи владельцем.
+    CreatedBooking:
+      type: object
+      required:
+        - booking
+      properties:
+        booking:
+          $ref: '#/components/schemas/Booking'
+      description: Созданное бронирование.
     CreatedEventType:
       type: object
       required:

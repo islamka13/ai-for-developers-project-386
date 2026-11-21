@@ -18,12 +18,47 @@ export type ApiError = {
 };
 
 /**
+ * Бронирование: слот, занятый гостем.
+ */
+export type Booking = {
+    /**
+     * Идентификатор генерирует сервер.
+     */
+    id: string;
+    eventTypeId: string;
+    /**
+     * Старт слота: ISO 8601 с offset зоны владельца.
+     */
+    start: string;
+    guestName: string;
+};
+
+/**
+ * Данные для создания бронирования гостем.
+ */
+export type CreateBooking = {
+    eventTypeId: string;
+    /**
+     * Старт слота: ISO 8601 с offset зоны владельца.
+     */
+    start: string;
+    guestName: string;
+};
+
+/**
  * Данные для создания типа встречи владельцем.
  */
 export type CreateEventType = {
     title: string;
     description: string;
     durationMinutes: number;
+};
+
+/**
+ * Созданное бронирование.
+ */
+export type CreatedBooking = {
+    booking: Booking;
 };
 
 /**
@@ -59,6 +94,39 @@ export type EventTypeList = {
 export type SlotList = {
     slots: Array<string>;
 };
+
+export type BookingsCreateBookingData = {
+    body: CreateBooking;
+    path?: never;
+    query?: never;
+    url: '/api/bookings';
+};
+
+export type BookingsCreateBookingErrors = {
+    /**
+     * The server could not understand the request due to invalid syntax.
+     */
+    400: ApiError;
+    /**
+     * The server cannot find the requested resource.
+     */
+    404: ApiError;
+    /**
+     * The request conflicts with the current state of the server.
+     */
+    409: ApiError;
+};
+
+export type BookingsCreateBookingError = BookingsCreateBookingErrors[keyof BookingsCreateBookingErrors];
+
+export type BookingsCreateBookingResponses = {
+    /**
+     * The request has succeeded and a new resource has been created as a result.
+     */
+    201: CreatedBooking;
+};
+
+export type BookingsCreateBookingResponse = BookingsCreateBookingResponses[keyof BookingsCreateBookingResponses];
 
 export type EventTypesListEventTypesData = {
     body?: never;

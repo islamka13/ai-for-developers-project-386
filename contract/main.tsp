@@ -58,6 +58,58 @@ model SlotList {
   slots: string[];
 }
 
+/** Бронирование: слот, занятый гостем. */
+model Booking {
+  /** Идентификатор генерирует сервер. */
+  id: string;
+
+  eventTypeId: string;
+
+  /** Старт слота: ISO 8601 с offset зоны владельца. */
+  start: offsetDateTime;
+
+  @minLength(1)
+  guestName: string;
+}
+
+/** Данные для создания бронирования гостем. */
+model CreateBooking {
+  eventTypeId: string;
+
+  /** Старт слота: ISO 8601 с offset зоны владельца. */
+  start: offsetDateTime;
+
+  @minLength(1)
+  guestName: string;
+}
+
+/** Созданное бронирование. */
+model CreatedBooking {
+  booking: Booking;
+}
+
+@route("/api/bookings")
+namespace Bookings {
+  /** Занять свободный слот (гость). */
+  @post
+  op createBooking(@body body: CreateBooking):
+    | {
+        @statusCode statusCode: 201;
+        @body body: CreatedBooking;
+      }
+    | {
+        @statusCode statusCode: 400;
+        @body body: ApiError;
+      }
+    | {
+        @statusCode statusCode: 404;
+        @body body: ApiError;
+      }
+    | {
+        @statusCode statusCode: 409;
+        @body body: ApiError;
+      };
+}
 
 @route("/api/event-types")
 namespace EventTypes {

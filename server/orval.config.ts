@@ -14,6 +14,10 @@ export default defineConfig({
           compositeRoute: 'src/generated/routes.ts',
           validatorOutputPath: 'src/generated/validator.ts',
         },
+        zod: {
+          // start хранится с offset зоны владельца (+05:00), а не только в Z.
+          dateTimeOptions: { offset: true },
+        },
       },
     },
   },

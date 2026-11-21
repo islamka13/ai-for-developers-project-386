@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { EventTypesCreateEventTypeData, EventTypesCreateEventTypeErrors, EventTypesCreateEventTypeResponses, EventTypesListEventTypesData, EventTypesListEventTypesResponses, EventTypesListSlotsData, EventTypesListSlotsErrors, EventTypesListSlotsResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
+import type { BookingsCreateBookingData, BookingsCreateBookingErrors, BookingsCreateBookingResponses, EventTypesCreateEventTypeData, EventTypesCreateEventTypeErrors, EventTypesCreateEventTypeResponses, EventTypesListEventTypesData, EventTypesListEventTypesResponses, EventTypesListSlotsData, EventTypesListSlotsErrors, EventTypesListSlotsResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,18 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+/**
+ * Занять свободный слот (гость).
+ */
+export const bookingsCreateBooking = <ThrowOnError extends boolean = false>(options: Options<BookingsCreateBookingData, ThrowOnError>): RequestResult<BookingsCreateBookingResponses, BookingsCreateBookingErrors, ThrowOnError> => (options.client ?? client).post<BookingsCreateBookingResponses, BookingsCreateBookingErrors, ThrowOnError>({
+    url: '/api/bookings',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Список типов встреч.
