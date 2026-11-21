@@ -19,6 +19,11 @@ description = "Собрать фронтенд и проверить типы б
 depends = ["install"]
 run = "npm run build"
 
+[tasks.generate]
+description = "Сгенерировать артефакты из контракта (TypeSpec → openapi.yaml → SDK и серверные схемы)"
+depends = ["install"]
+run = "npm run generate"
+
 [tasks.test]
 description = "Запустить тесты"
 depends = ["install"]

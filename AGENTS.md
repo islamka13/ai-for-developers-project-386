@@ -8,6 +8,7 @@
 
 - `mise install` — установить инструменты (Node.js, hk)
 - `mise run install` — установить npm-зависимости
+- `mise run generate` — сгенерировать артефакты из контракта: `tsp compile` → `contract/openapi.yaml`, клиентский SDK (@hey-api/openapi-ts) → `web/src/client/`, серверные zod-схемы/типы/роуты (Orval `client: 'hono'`) → `server/src/generated/`
 - `mise run dev` — запустить dev-серверы (бекенд :3000, фронтенд :5173, прокси `/api` → :3000)
 - `mise run build` — собрать фронтенд (`web/dist`) и проверить типы бекенда
 - `mise run check` — **все проверки**: линтер (oxlint) + типы (tsc) + тесты (Vitest). Та же команда запускается в CI
@@ -20,6 +21,11 @@ Git-хуки через [hk](https://hk.jdx.dev/) (`hk install` после кл�
 Монорепозиторий (npm workspaces):
 
 - `server/` — бекенд на Hono (TypeScript, нативный запуск .ts в Node 26). Вход: `src/index.ts`, приложение: `src/app.ts`. Тесты: `test/`
+- `contract/` — API-контракт на TypeSpec (`main.tsp`); `tsp compile` эмитит `openapi.yaml` через `@typespec/openapi3`
+- **Генерируемые пути — руками НЕ править** (правится контракт + `mise run generate`; CI проверяет отсутствие расхождений):
+  - `contract/openapi.yaml`
+  - `web/src/client/` — клиентский SDK
+  - `server/src/generated/` — zod-схемы, типы, валидатор, роуты. Исключение: `server/src/handlers/` — заготовки хендлеров Orval (smart-стратегия), в них руками пишется только бизнес-логика
 - `web/` — фронтенд: Vite 8 + React 19 + Tailwind CSS 4 + shadcn/ui (алиас `@/` → `web/src`, компоненты в `src/components/ui`)
 - `.github/workflows/ci.yml` — наш CI (прогон `mise run check`)
 - `.github/workflows/hexlet-check.yml` — автопроверка Хекслета, **не редактировать и не удалять**
