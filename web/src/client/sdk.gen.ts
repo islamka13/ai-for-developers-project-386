@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { EventTypesListEventTypesData, EventTypesListEventTypesResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
+import type { EventTypesCreateEventTypeData, EventTypesCreateEventTypeErrors, EventTypesCreateEventTypeResponses, EventTypesListEventTypesData, EventTypesListEventTypesResponses, HealthCheckData, HealthCheckResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -22,6 +22,18 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  * Список типов встреч.
  */
 export const eventTypesListEventTypes = <ThrowOnError extends boolean = false>(options?: Options<EventTypesListEventTypesData, ThrowOnError>): RequestResult<EventTypesListEventTypesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<EventTypesListEventTypesResponses, unknown, ThrowOnError>({ url: '/api/event-types', ...options });
+
+/**
+ * Создать тип встречи (владелец).
+ */
+export const eventTypesCreateEventType = <ThrowOnError extends boolean = false>(options: Options<EventTypesCreateEventTypeData, ThrowOnError>): RequestResult<EventTypesCreateEventTypeResponses, EventTypesCreateEventTypeErrors, ThrowOnError> => (options.client ?? client).post<EventTypesCreateEventTypeResponses, EventTypesCreateEventTypeErrors, ThrowOnError>({
+    url: '/api/event-types',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Проверка живости сервиса.

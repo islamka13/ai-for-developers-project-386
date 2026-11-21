@@ -6,10 +6,12 @@
  */
 import { Hono } from 'hono';
 import { eventTypesListEventTypesHandlers } from '../handlers/eventTypesListEventTypes.ts';
+import { eventTypesCreateEventTypeHandlers } from '../handlers/eventTypesCreateEventType.ts';
 import { healthCheckHandlers } from '../handlers/healthCheck.ts';
 
 const app = new Hono()
   .get('/api/event-types', ...eventTypesListEventTypesHandlers)
+  .post('/api/event-types', ...eventTypesCreateEventTypeHandlers)
   .get('/api/health', ...healthCheckHandlers);
 
 export default app;

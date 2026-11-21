@@ -5,10 +5,42 @@ export type ClientOptions = {
 };
 
 /**
+ * Единая форма ошибки: код, сообщение и необязательные детали по полям.
+ */
+export type ApiError = {
+    error: {
+        code: string;
+        message: string;
+        details?: {
+            [key: string]: string;
+        };
+    };
+};
+
+/**
+ * Данные для создания типа встречи владельцем.
+ */
+export type CreateEventType = {
+    title: string;
+    description: string;
+    durationMinutes: number;
+};
+
+/**
+ * Созданный тип встречи.
+ */
+export type CreatedEventType = {
+    eventType: EventType;
+};
+
+/**
  * Тип встречи: название, описание и длительность в минутах.
  */
 export type EventType = {
-    id: number;
+    /**
+     * Идентификатор генерирует сервер.
+     */
+    id: string;
     title: string;
     description: string;
     durationMinutes: number;
@@ -36,6 +68,31 @@ export type EventTypesListEventTypesResponses = {
 };
 
 export type EventTypesListEventTypesResponse = EventTypesListEventTypesResponses[keyof EventTypesListEventTypesResponses];
+
+export type EventTypesCreateEventTypeData = {
+    body: CreateEventType;
+    path?: never;
+    query?: never;
+    url: '/api/event-types';
+};
+
+export type EventTypesCreateEventTypeErrors = {
+    /**
+     * The server could not understand the request due to invalid syntax.
+     */
+    400: ApiError;
+};
+
+export type EventTypesCreateEventTypeError = EventTypesCreateEventTypeErrors[keyof EventTypesCreateEventTypeErrors];
+
+export type EventTypesCreateEventTypeResponses = {
+    /**
+     * The request has succeeded and a new resource has been created as a result.
+     */
+    201: CreatedEventType;
+};
+
+export type EventTypesCreateEventTypeResponse = EventTypesCreateEventTypeResponses[keyof EventTypesCreateEventTypeResponses];
 
 export type HealthCheckData = {
     body?: never;

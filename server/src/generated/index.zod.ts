@@ -13,12 +13,39 @@ export const eventTypesListEventTypesResponseEventTypesItemDurationMinutesMax = 
 
 export const EventTypesListEventTypesResponse = zod.object({
   "eventTypes": zod.array(zod.object({
-  "id": zod.int(),
+  "id": zod.string().describe('Идентификатор генерирует сервер.'),
   "title": zod.string().min(1),
   "description": zod.string(),
   "durationMinutes": zod.int().min(1).max(eventTypesListEventTypesResponseEventTypesItemDurationMinutesMax)
 }).describe('Тип встречи: название, описание и длительность в минутах.'))
 }).describe('Каталог типов встреч.')
+
+
+
+
+export const eventTypesCreateEventTypeBodyDurationMinutesMax = 540;
+
+
+
+export const EventTypesCreateEventTypeBody = zod.object({
+  "title": zod.string().min(1),
+  "description": zod.string().min(1),
+  "durationMinutes": zod.int().min(1).max(eventTypesCreateEventTypeBodyDurationMinutesMax)
+}).describe('Данные для создания типа встречи владельцем.')
+
+
+export const eventTypesCreateEventTypeResponseEventTypeDurationMinutesMax = 540;
+
+
+
+export const EventTypesCreateEventTypeResponse = zod.object({
+  "eventType": zod.object({
+  "id": zod.string().describe('Идентификатор генерирует сервер.'),
+  "title": zod.string().min(1),
+  "description": zod.string(),
+  "durationMinutes": zod.int().min(1).max(eventTypesCreateEventTypeResponseEventTypeDurationMinutesMax)
+}).describe('Тип встречи: название, описание и длительность в минутах.')
+}).describe('Созданный тип встречи.')
 
 
 export const HealthCheckResponse = zod.object({

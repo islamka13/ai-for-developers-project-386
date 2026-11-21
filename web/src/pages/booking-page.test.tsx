@@ -24,8 +24,8 @@ describe('Страница записи: каталог типов встреч'
   it('показывает типы встреч, загруженные через SDK', async () => {
     stubFetch({
       eventTypes: [
-        { id: 1, title: 'Знакомство', description: 'Короткая встреча', durationMinutes: 30 },
-        { id: 2, title: 'Консультация', description: 'Развёрнутая консультация', durationMinutes: 60 },
+        { id: '1', title: 'Знакомство', description: 'Короткая встреча', durationMinutes: 30 },
+        { id: '2', title: 'Консультация', description: 'Развёрнутая консультация', durationMinutes: 60 },
       ],
     })
 

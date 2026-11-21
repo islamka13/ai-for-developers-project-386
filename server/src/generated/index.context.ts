@@ -6,5 +6,10 @@
  */
 import type { Context, Env } from 'hono';
 
+import type {
+CreateEventType
+} from './schemas/index.ts';
+
 export type EventTypesListEventTypesContext<E extends Env = any> = Context<E, '/api/event-types'>
+export type EventTypesCreateEventTypeContext<E extends Env = any> = Context<E, '/api/event-types', { in: { json: CreateEventType, }, out: { json: CreateEventType, } }>
 export type HealthCheckContext<E extends Env = any> = Context<E, '/api/health'>
