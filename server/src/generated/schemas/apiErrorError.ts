@@ -4,9 +4,10 @@
  * Запись на звонок API
  * OpenAPI spec version: 0.0.0
  */
+import type { ApiErrorErrorDetails } from './apiErrorErrorDetails.ts';
 
 export type ApiErrorError = {
   code: string;
   message: string;
-  details?: unknown;
+  details?: ApiErrorErrorDetails;
 };

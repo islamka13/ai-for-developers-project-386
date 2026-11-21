@@ -8,7 +8,8 @@ namespace Api;
 
 /** Тип встречи: название, описание и длительность в минутах. */
 model EventType {
-  id: int32;
+  /** Идентификатор генерирует сервер. */
+  id: string;
 
   @minLength(1)
   title: string;
@@ -20,17 +21,35 @@ model EventType {
   durationMinutes: int32;
 }
 
+/** Данные для создания типа встречи владельцем. */
+model CreateEventType {
+  @minLength(1)
+  title: string;
+
+  @minLength(1)
+  description: string;
+
+  @minValue(1)
+  @maxValue(540)
+  durationMinutes: int32;
+}
+
+/** Созданный тип встречи. */
+model CreatedEventType {
+  eventType: EventType;
+}
+
 /** Каталог типов встреч. */
 model EventTypeList {
   eventTypes: EventType[];
 }
 
-/** Ошибка API в единой форме. */
+/** Единая форма ошибки: код, сообщение и необязательные детали по полям. */
 model ApiError {
   error: {
     code: string;
     message: string;
-    details?: unknown;
+    details?: Record<string>;
   };
 }
 
@@ -38,6 +57,7 @@ model ApiError {
 model SlotList {
   slots: string[];
 }
+
 
 @route("/api/event-types")
 namespace EventTypes {
@@ -62,6 +82,18 @@ namespace EventTypes {
     @statusCode statusCode: 404;
     @body body: ApiError;
   };
+
+  /** Создать тип встречи (владелец). */
+  @post
+  op createEventType(@body body: CreateEventType):
+    | {
+        @statusCode statusCode: 201;
+        @body body: CreatedEventType;
+      }
+    | {
+        @statusCode statusCode: 400;
+        @body body: ApiError;
+      };
 }
 
 @route("/api/health")

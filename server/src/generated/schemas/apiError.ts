@@ -7,7 +7,7 @@
 import type { ApiErrorError } from './apiErrorError.ts';
 
 /**
- * Ошибка API в единой форме.
+ * Единая форма ошибки: код, сообщение и необязательные детали по полям.
  */
 export interface ApiError {
   error: ApiErrorError;

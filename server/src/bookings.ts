@@ -3,7 +3,7 @@
  */
 export interface Booking {
   id: string
-  eventTypeId: number
+  eventTypeId: string
   start: Date
   durationMinutes: number
   guestName: string

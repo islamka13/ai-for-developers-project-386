@@ -7,6 +7,9 @@
 
 export * from './apiError.ts';
 export * from './apiErrorError.ts';
+export * from './apiErrorErrorDetails.ts';
+export * from './createdEventType.ts';
+export * from './createEventType.ts';
 export * from './eventType.ts';
 export * from './eventTypeList.ts';
 export * from './eventTypesListSlotsParams.ts';

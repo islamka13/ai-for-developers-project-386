@@ -9,7 +9,8 @@
  * Тип встречи: название, описание и длительность в минутах.
  */
 export interface EventType {
-  id: number;
+  /** Идентификатор генерирует сервер. */
+  id: string;
   /** @minLength 1 */
   title: string;
   description: string;

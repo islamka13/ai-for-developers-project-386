@@ -1,11 +1,15 @@
 import path from 'node:path'
 import SwaggerParser from '@apidevtools/swagger-parser'
-import Ajv from 'ajv'
-import addFormats from 'ajv-formats'
+import AjvModule from 'ajv'
+import addFormatsModule from 'ajv-formats'
 import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { app } from '../src/app.ts'
 import { bookingRepository } from '../src/bookings.ts'
 import { clock } from '../src/clock.ts'
+
+// CJS-пакеты под verbatimModuleSyntax: default-экспорт лежит в `.default`.
+const Ajv = AjvModule.default
+const addFormats = addFormatsModule.default
 
 const SPEC_PATH = path.resolve(__dirname, '../../contract/openapi.yaml')
 
@@ -103,7 +107,7 @@ describe('GET /api/event-types/{id}/slots', () => {
     freezeNow('2026-11-22T05:20:00Z')
     bookingRepository.add({
       id: 'b1',
-      eventTypeId: 1,
+      eventTypeId: '1',
       start: new Date('2026-11-24T10:00:00+05:00'),
       durationMinutes: 30,
       guestName: 'Тест',

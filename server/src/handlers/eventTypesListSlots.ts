@@ -19,7 +19,7 @@ zValidator('response', EventTypesListSlotsResponse),
 async (c: EventTypesListSlotsContext) => {
     const { id } = c.req.valid('param')
     const { date } = c.req.valid('query')
-    const eventType = eventTypeRepository.findById(Number(id))
+    const eventType = eventTypeRepository.findById(id)
     if (!eventType) {
       return c.json(
         { error: { code: 'not_found', message: 'Тип встречи не найден' } },

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "generate": "orval",
+    "generate": "orval && node scripts/fix-generated-imports.mjs",
     "start": "node src/index.ts",
     "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
