@@ -20,5 +20,8 @@ jobs:
       - name: Fail if generated artifacts drifted
         run: git diff --exit-code
 
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
       - name: Run checks
         run: mise run check
