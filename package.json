@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "workspaces": [
+    "contract",
     "server",
     "web"
   ],
   "scripts": {
     "dev": "concurrently -n server,web -c blue,green \"npm run dev -w server\" \"npm run dev -w web\"",
+    "generate": "npm run generate -w contract && npm run generate -w web && npm run generate -w server",
     "build": "npm run build -w web && npm run build -w server",
     "test": "npm run test -w server && npm run test -w web",
     "lint": "oxlint .",
@@ -16,6 +18,7 @@
   },
   "devDependencies": {
     "concurrently": "^10.0.7",
-    "oxlint": "^1.94.0"
+    "oxlint": "^1.94.0",
+    "typescript": "6.0.3"
   }
 }
