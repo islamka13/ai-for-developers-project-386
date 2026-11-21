@@ -89,11 +89,57 @@ export type EventTypeList = {
 };
 
 /**
+ * Краткая сводка типа встречи, вложенная в бронирование владельцу.
+ */
+export type EventTypeSummary = {
+    id: string;
+    title: string;
+    durationMinutes: number;
+};
+
+/**
  * Свободные старты слотов на дату (ISO 8601 с offset зоны владельца).
  */
 export type SlotList = {
     slots: Array<string>;
 };
+
+/**
+ * Бронирование с данными типа встречи для страницы владельца.
+ */
+export type UpcomingBooking = {
+    id: string;
+    eventTypeId: string;
+    /**
+     * Старт слота: ISO 8601 с offset зоны владельца.
+     */
+    start: string;
+    guestName: string;
+    eventType: EventTypeSummary;
+};
+
+/**
+ * Список предстоящих встреч владельца.
+ */
+export type UpcomingBookingList = {
+    bookings: Array<UpcomingBooking>;
+};
+
+export type BookingsListBookingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/bookings';
+};
+
+export type BookingsListBookingsResponses = {
+    /**
+     * The request has succeeded.
+     */
+    200: UpcomingBookingList;
+};
+
+export type BookingsListBookingsResponse = BookingsListBookingsResponses[keyof BookingsListBookingsResponses];
 
 export type BookingsCreateBookingData = {
     body: CreateBooking;

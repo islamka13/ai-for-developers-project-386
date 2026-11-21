@@ -5,6 +5,17 @@ info:
 tags: []
 paths:
   /api/bookings:
+    get:
+      operationId: Bookings_listBookings
+      description: Предстоящие встречи владельца.
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpcomingBookingList'
     post:
       operationId: Bookings_createBooking
       description: Занять свободный слот (гость).
@@ -250,6 +261,21 @@ components:
           items:
             $ref: '#/components/schemas/EventType'
       description: Каталог типов встреч.
+    EventTypeSummary:
+      type: object
+      required:
+        - id
+        - title
+        - durationMinutes
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        durationMinutes:
+          type: integer
+          format: int32
+      description: Краткая сводка типа встречи, вложенная в бронирование владельцу.
     SlotList:
       type: object
       required:
@@ -260,6 +286,38 @@ components:
           items:
             type: string
       description: Свободные старты слотов на дату (ISO 8601 с offset зоны владельца).
+    UpcomingBooking:
+      type: object
+      required:
+        - id
+        - eventTypeId
+        - start
+        - guestName
+        - eventType
+      properties:
+        id:
+          type: string
+        eventTypeId:
+          type: string
+        start:
+          type: string
+          format: date-time
+          description: 'Старт слота: ISO 8601 с offset зоны владельца.'
+        guestName:
+          type: string
+        eventType:
+          $ref: '#/components/schemas/EventTypeSummary'
+      description: Бронирование с данными типа встречи для страницы владельца.
+    UpcomingBookingList:
+      type: object
+      required:
+        - bookings
+      properties:
+        bookings:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpcomingBooking'
+      description: Список предстоящих встреч владельца.
 servers:
   - url: http://localhost:3000
     description: dev server

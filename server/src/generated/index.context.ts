@@ -12,6 +12,7 @@ CreateBooking,
   EventTypesListSlotsParams
 } from './schemas/index.ts';
 
+export type BookingsListBookingsContext<E extends Env = any> = Context<E, '/api/bookings'>
 export type BookingsCreateBookingContext<E extends Env = any> = Context<E, '/api/bookings', { in: { json: CreateBooking, }, out: { json: CreateBooking, } }>
 export type EventTypesListEventTypesContext<E extends Env = any> = Context<E, '/api/event-types'>
 export type EventTypesCreateEventTypeContext<E extends Env = any> = Context<E, '/api/event-types', { in: { json: CreateEventType, }, out: { json: CreateEventType, } }>

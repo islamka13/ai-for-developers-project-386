@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdminPage } from './admin-page'
@@ -116,5 +116,56 @@ describe('Страница владельца: типы встреч', () => {
     expect(
       screen.getByText('Too big: expected number to be <=540'),
     ).toBeInTheDocument()
+  })
+})
+
+type UpcomingBooking = {
+  id: string
+  eventTypeId: string
+  start: string
+  guestName: string
+  eventType: { id: string; title: string; durationMinutes: number }
+}
+
+function stubBookingsApi(bookings: UpcomingBooking[]) {
+  stubFetch((url, method) => {
+    if (url.endsWith('/api/event-types') && method === 'GET') {
+      return jsonResponse({ eventTypes: seedTypes })
+    }
+    if (url.endsWith('/api/bookings') && method === 'GET') {
+      return jsonResponse({ bookings })
+    }
+    return new Response('Not Found', { status: 404 })
+  })
+}
+
+describe('Страница владельца: предстоящие встречи', () => {
+  it('показывает список встреч с временем, типом и именем гостя', async () => {
+    stubBookingsApi([
+      {
+        id: 'b1',
+        eventTypeId: '1',
+        start: '2026-11-23T09:00:00+05:00',
+        guestName: 'Аня',
+        eventType: { id: '1', title: 'Знакомство', durationMinutes: 30 },
+      },
+    ])
+
+    render(<AdminPage />)
+
+    const section = await screen.findByRole('region', { name: 'Предстоящие встречи' })
+    expect(within(section).getByText(/09:00–09:30/)).toBeInTheDocument()
+    expect(within(section).getByText(/UTC\+5/)).toBeInTheDocument()
+    expect(within(section).getByText('Знакомство')).toBeInTheDocument()
+    expect(within(section).getByText('Аня')).toBeInTheDocument()
+  })
+
+  it('показывает понятное пустое состояние', async () => {
+    stubBookingsApi([])
+
+    render(<AdminPage />)
+
+    const section = await screen.findByRole('region', { name: 'Предстоящие встречи' })
+    expect(within(section).getByText('Пока нет предстоящих встреч')).toBeInTheDocument()
   })
 })

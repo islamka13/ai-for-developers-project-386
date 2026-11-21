@@ -6,6 +6,21 @@
  */
 import * as zod from 'zod';
 
+export const BookingsListBookingsResponse = zod.object({
+  "bookings": zod.array(zod.object({
+  "id": zod.string(),
+  "eventTypeId": zod.string(),
+  "start": zod.iso.datetime({"offset":true}).describe('Старт слота: ISO 8601 с offset зоны владельца.'),
+  "guestName": zod.string(),
+  "eventType": zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "durationMinutes": zod.int()
+}).describe('Краткая сводка типа встречи, вложенная в бронирование владельцу.')
+}).describe('Бронирование с данными типа встречи для страницы владельца.'))
+}).describe('Список предстоящих встреч владельца.')
+
+
 
 
 

@@ -88,8 +88,37 @@ model CreatedBooking {
   booking: Booking;
 }
 
+/** Краткая сводка типа встречи, вложенная в бронирование владельцу. */
+model EventTypeSummary {
+  id: string;
+  title: string;
+  durationMinutes: int32;
+}
+
+/** Бронирование с данными типа встречи для страницы владельца. */
+model UpcomingBooking {
+  id: string;
+  eventTypeId: string;
+  /** Старт слота: ISO 8601 с offset зоны владельца. */
+  start: offsetDateTime;
+  guestName: string;
+  eventType: EventTypeSummary;
+}
+
+/** Список предстоящих встреч владельца. */
+model UpcomingBookingList {
+  bookings: UpcomingBooking[];
+}
+
 @route("/api/bookings")
 namespace Bookings {
+  /** Предстоящие встречи владельца. */
+  @get
+  op listBookings(): {
+    @statusCode statusCode: 200;
+    @body body: UpcomingBookingList;
+  };
+
   /** Занять свободный слот (гость). */
   @post
   op createBooking(@body body: CreateBooking):
