@@ -24,6 +24,22 @@ Git-хуки через [hk](https://hk.jdx.dev/) (`hk install` после кл�
 - `.github/workflows/ci.yml` — наш CI (прогон `mise run check`)
 - `.github/workflows/hexlet-check.yml` — автопроверка Хекслета, **не редактировать и не удалять**
 
+## Agent skills
+
+Скиллы установлены в `.agents/skills/` (набор [mattpocock/skills](https://github.com/mattpocock/skills)). Вызов — просьбой по имени («Запусти скилл wayfinder») или ссылкой на файл `@.agents/skills/<имя>/SKILL.md`.
+
+### Issue tracker
+
+Задачи и спецификации живут в GitHub Issues этого репозитория, операции через `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Пять канонических меток: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: `GLOSSARY.md` в корне, решения в `docs/adr/` (создаются лениво скиллами). See `docs/agents/domain.md`.
+
 ## Правила
 
 - **Коммиты по Conventional Commits**: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:` и т.д.
